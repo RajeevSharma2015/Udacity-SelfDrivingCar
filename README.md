@@ -36,6 +36,8 @@ Estimated time: 89 days
 ### Purchase Term To Unlock
 Path Planning, Concentrations, and Systems
 
+
+
 In this term, you'll learn how to plan where the vehicle should go, how the vehicle systems work together to get it there, and you'll perform a deep-dive into a concentration of your choice.
 
     Project: Path Planning Project
@@ -47,4 +49,4 @@ Estimated time: 89 days
 
 
 ### Term-1 Outcome Samples (a few)
-
+https://classroom.udacity.com/nanodegrees/nd013/syllabus/core-curriculum
