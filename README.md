@@ -1,13 +1,13 @@
 # Udacity-SelfDrivingCar
-Udacity Self Driving Car - Nano degree program and project works
+Udacity Self Driving Car - Nano degree program supposed to complete 14 project assignments. This repository maintain different project work activity, code, input data, outcome/result, writeup for submissions and domains miscellenous learning. Advance nano degree program for self driving car has 3 terms (3 months each). 
 
-#### Current Status of my course : Term-1 is expected to complete (Jan 2018)
+#### CURRENT STATUS OF MY COURSE : Term-1 supposed to complete by FEB 2018
 
 ## About Program & Core Curriculum
-Program has three terms and each need to complete in time bound fashion of three months. Here is curriculam overview - 
+Degree program has three parts (3 terms and 3 months each). here is details of [ Udacity core curriculam ] ( https://classroom.udacity.com/nanodegrees/nd013/syllabus/core-curriculum )
 
-### Part 1
-### Computer Vision and Deep Learning
+## Udacity "Self Driving Car" Program - Learning & Project Works Description 
+### Part 1 : Computer Vision and Deep Learning
 
 In this term, you'll become an expert in applying Computer Vision and Deep Learning on automotive problems. You will teach the car to detect lane lines, predict steering angle, and more all based on just camera data!
 
@@ -16,11 +16,8 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
     Project: Behavioral Cloning
     Project: Advanced Lane Finding
     Project: Vehicle Detection and Tracking
-    
-Estimated time: 90 days 
 
-### Part 2 
-### Sensor Fusion, Localization, and Control
+### Part 2 : Sensor Fusion, Localization, and Control
 
 In this term, you'll learn how to use an array of sensor data to perceive the environment and control the vehicle. You'll evaluate sensor data from camera, radar, lidar, and GPS, and use these in closed-loop controllers that actuate the vehicle.
 
@@ -30,13 +27,7 @@ In this term, you'll learn how to use an array of sensor data to perceive the en
     Project: PID Controller
     Project: Model Predictive Control
 
-Estimated time: 89 days
-
-### Part 3
-### Purchase Term To Unlock
-Path Planning, Concentrations, and Systems
-
-
+### Part 3 : Path Planning, Concentrations, and Systems
 
 In this term, you'll learn how to plan where the vehicle should go, how the vehicle systems work together to get it there, and you'll perform a deep-dive into a concentration of your choice.
 
@@ -45,8 +36,8 @@ In this term, you'll learn how to plan where the vehicle should go, how the vehi
     Project: Functional Safety of a Lane Assistance System
     Project: Programming a Real Self-Driving Car
 
-Estimated time: 89 days
+### Term-1 : Projects Sample Outcome Samples
+This term was dedicated to "Computer Vision & Deep Learning". We learn finding lane lines on the road, classify traffic signs, driving behaviour cloning, advance lane finding, vehicle detection and tracking.
 
+To achieve pre-decided goals of each project we need to deep dive into advance OpenCV images processing, Neural networks, Machine learning libraries and Deep neural networks. To explore further pl refer each project README & submission WRITEUP file. Few sampled outcomes are represented here !
 
-### Term-1 Outcome Samples (a few)
-https://classroom.udacity.com/nanodegrees/nd013/syllabus/core-curriculum
