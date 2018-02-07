@@ -31,39 +31,31 @@ import laneline
 from moviepy.editor import VideoFileClip
 from IPython.display import HTML
 
+##### Global Variable 
+global X_scaler
+global svc
 
 ### System Parameters #########################################################
 DEBUG_FLAG = 'False'
 REDUCE_SAMPLE = 'True'
-sample_size = 500   # Limiting number of samples
-VEHICLES = ''       # Path for vehicle data
-NOT_VEHICLES = ''   # Path for Not Vehicle data
+sample_size = 2500           # Limiting number of samples
+VEHICLES = ''               # Path for vehicle data
+NOT_VEHICLES = ''           # Path for Not Vehicle data
 projectDir1 = './vehicles/vehicles/GTI*/'             # GTI vehicles path
 projectDir2 = './vehicles/vehicles/KITTI*/'           # KITTI vehicles path
 projectDir3 = './non-vehicles/non-vehicles/GTI/'      # GTI non vehicle
 projectDir4 =  './non-vehicles/non-vehicles/Extras/'  # Extra non vehicle
-OUTPUT_PATH = './output_images/'                      # Output path 
-OUTPUT_PATH1 = './output_images/Additional/'          # Output path - additional
-OUTPUT_VIDEO_PATH = './output_images/processed_video/' # video output path
+OUTPUT_IMAGE = './Output/test_images'                      # Output path 
+OUTPUT_FIND_CAR = './Output/find_cars/'          # Output path - additional
+OUTPUT_VIDEO_PATH = './Output/processed_video/' # video output path
 
 ### Initialize variables
 cars = []          # cars list
 notcars = []       # non cars list
 
 #### Classifier parameter decleration and initialization
-#color_space = 'LUV'           # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
-#orient = 8                    # HOG orientations
-#pix_per_cell = 8              # HOG pixels per cell
-#cell_per_block = 2            # HOG cells per block
-#hog_channel = 0               # Can be 0, 1, 2, or "ALL"
-#spatial_size = (16, 16)       # Spatial binning dimensions
-#hist_bins = 32                # Number of histogram bins
-#spatial_feat = True           # Spatial features on or off
-#hist_feat = True              # Histogram features on or off
-#hog_feat = True               # HOG features on or off
-
 color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, \
-hist_bins, hist_range, spatial_feat, hist_feat, hog_feat,n_count = init_param()
+hist_bins, hist_range, spatial_feat, hist_feat, hog_feat, n_count = init_param()
 
 print ("Initialized Paramaters:")
 print("color_space :", color_space)
@@ -71,15 +63,7 @@ print("spatial_size :", spatial_size)
 print("",)
 
 #### Frames processing parameters
-THRES = 3          # Minimal overlapping boxes
-ALPHA = 0.75       # Filter parameter, weight of the previous measurements
-track_list = []    #[np.array([880, 440, 76, 76])]
-# track_list += [np.array([1200, 480, 124, 124])]
-THRES_LEN = 32                   # Thresold
-Y_MIN = 440
-heat_p = np.zeros((720, 1280))   # Store prev heat image
-boxes_p = []                     # Store prev car boxes
-#n_count = 0                      # Frame counter
+THRES, ALPHA, track_list, THRES_LEN, Y_MIN, heat_p, boxes_p  = init_car_find()
 
 ###############################################################################
 ### Method-1 :  Input of project Vehicle/Non-Vehicle and Misc Images
@@ -116,27 +100,6 @@ if REDUCE_SAMPLE == 'True':
 else:
     print("Complete set of images used")
 ###############################################################################
-
-
-###############################################################################
-### Method-2 : Input of cars and notcars
-###############################################################################
-#images_car = glob.glob('vehicles/vehicles/GTI*/*.png')
-#for image in images_car:
-#    cars.append(image)
-## Uncomment if you need to reduce the sample size
-# cars = cars[0:sample_size]
-#print(len(cars))
-
-### Read in notcars
-#images_notcar = glob.glob('non_vehicles/non_vehicles/GTI/*.png')
-#for image in images_notcar:
-#    notcars.append(image)
-## Uncomment if you need to reduce the sample size
-# notcars = notcars[0:sample_size]
-#print(len(notcars))
-###############################################################################
-
 
 ################ Classifier Section ###########################################
 # Define parameters for feature extraction
@@ -178,7 +141,6 @@ print('Test Accuracy of SVC = ', round(svc.score(X_test, y_test), 4)) # Check th
 print("", )    
 
 ###### classifier test on test_images #########################################
-
 t=time.time() # Start time
 for image_p in glob.glob('test_images/test*.jpg'):
     image = cv2.imread(image_p)
@@ -195,7 +157,7 @@ for image_p in glob.glob('test_images/test*.jpg'):
                       
     window_img = draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)                    
     #show_img(window_img)
-    fname = OUTPUT_PATH + image_p 
+    fname = OUTPUT_IMAGE + image_p 
     cv2.imwrite(fname, window_img)
     print("draw box image processed (glob & test input) : ", fname)
 
@@ -216,7 +178,7 @@ windows = slide_window(image, x_start_stop=[400, 880], y_start_stop=[400, 470],
                     xy_window=(48, 48), xy_overlap=(0.75, 0.75))
 window_img = draw_boxes(window_img, windows, color=(255, 0, 0), thick=6)
 
-fname = OUTPUT_PATH + 'test_images/draw_box_test2.jpg'
+fname = OUTPUT_IMAGE + 'draw_box_test2.jpg'
 cv2.imwrite(fname, window_img)
 print("draw box image processed : ", fname)
 print("", )
@@ -252,7 +214,7 @@ windows = slide_window(image, x_start_stop=[track[0]-w_size,track[0]+w_size],
 window_img = draw_boxes(window_img, windows, color=(255, 255, 0), thick=4)
 
                   
-fname = OUTPUT_PATH + 'test_images/slide_window_test5.jpg'
+fname = OUTPUT_IMAGE + 'slide_window_test5.jpg'
 cv2.imwrite(fname, window_img)
 print("Slide window image processed : ", fname)
 print("", )
@@ -263,7 +225,7 @@ image = cv2.imread('test_images/test6.jpg')
 
 out_image = find_car_process(image)
 
-fname = OUTPUT_PATH + 'test_images/find_car_process_test6.jpg'
+fname = OUTPUT_FIND_CAR + 'find_car_process_test6.jpg'
 cv2.imwrite(fname, out_image)
 print("find_car_process() test6 image outcome : ", fname)
 print("", )
@@ -278,56 +240,19 @@ for image in glob.glob('test_images/test4.jpg'):
         print("Need to write gray image")
     
     # show_img(laneline.draw_lane(laneline.draw_lane_img_p(image)))
-    fname = OUTPUT_PATH + 'test_images/lane_line_test5.jpg'
+    fname = OUTPUT_IMAGE + 'lane_line_test5.jpg'
     cv2.imwrite(fname, img)
     print("Image processed - lane line identified : ", fname)
     print("", )
 ###############################################################################
 
-###### Pipeline Execution : On test images 
-test_images = glob.glob('./test_images/test*.jpg')
-
-for i, im in enumerate(test_images):
-    image = cv2.imread(im)
-    out_image = find_car_process(image)
-    fname = OUTPUT_PATH + 'test_images/' + 'find_car_process_pipeline_test' + str(i+1) + '.jpg'
-    cv2.imwrite(fname, out_image)
-    print("find_car_process() test* images outcome : ", fname)
-    
-print("", )   
-
-#### video processing - initial
-test_out_file = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'test_video_out.mp4'
-clip_test = VideoFileClip('test_video.mp4')
-#clip1 = VideoFileClip("project_video.mp4")
-clip_test_out = clip_test.fl_image(find_car_process)
-clip_test_out.write_videofile(test_out_file, audio=False)   
-
-
-###### Pipeline - Improvisation (keeping previous rectangle)
-## a class defined (keep previous rects)
-## Update new location if len(rect) >15   
-test_out_file2 = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'test_video_out2.mp4'
-clip_test = VideoFileClip('test_video.mp4')
-clip_test_out2 = clip_test.fl_image(find_car_process_video)
-clip_test_out2.write_videofile(test_out_file2, audio=False)    
-    
-### apply pipeline on project video 
-proj_out_file = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'project_video_out.mp4'
-clip_proj = VideoFileClip('project_video.mp4') 
-clip_proj_out = clip_proj.fl_image(find_car_process_video)
-clip_proj_out.write_videofile(proj_out_file, audio=False)
-                               
-                               
-######## Alternative Section : Curriculam functions trial #####################    
-    
 ###################### Frames Processing - Class Section ######################
-if DEBUG_FLAG == True :
+if DEBUG_FLAG == 'True':
     color_space, orient, pix_per_cell, cell_per_block, hog_channel, \
     spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, \
     hog_feat,n_count = init_param()
-    
-    ####### find a car in images - hog samples processing #########################
+
+####### find a car in images - hog samples processing #########################
     
     #### First tried car find methodology - taught in curriculam ##############
     #####
@@ -357,7 +282,89 @@ if DEBUG_FLAG == True :
     # plt.imshow(out_img)
     # img = frame_proc(image, lane=True, vis=False)
     
-    fname = OUTPUT_PATH + 'test_images/find_car_test5.jpg'
+    fname = OUTPUT_FIND_CAR + 'find_car_cu_test5.jpg'
+    cv2.imwrite(fname, out_img)
+    
+    print("find_car_test5.jpg - find car function outcome : ", fname)
+    print("", )
+###############################################################################
+
+###### Pipeline Execution : On test images 
+test_images = glob.glob('./test_images/test*.jpg')
+
+for i, im in enumerate(test_images):
+    image = cv2.imread(im)
+    out_image = find_car_process(image)
+    fname = OUTPUT_FIND_CAR + 'find_car_process_pipeline_test' + str(i+1) + '.jpg'
+    cv2.imwrite(fname, out_image)
+    print("find_car_process() test* images outcome : ", fname)
+    
+print("", )   
+
+################ Video process - Section A ####################################
+VIDEO_PROCE = False
+if VIDEO_PROCE != False:
+    #### video processing - initial
+    test_out_file = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'test_video_out.mp4'
+    clip_test = VideoFileClip('test_video.mp4')
+    #clip1 = VideoFileClip("project_video.mp4")
+    clip_test_out = clip_test.fl_image(find_car_process)
+    clip_test_out.write_videofile(test_out_file, audio=False)   
+    
+    
+    ###### Pipeline - Improvisation (keeping previous rectangle)
+    ## a class defined (keep previous rects)
+    ## Update new location if len(rect) >15   
+    test_out_file2 = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'test_video_out2.mp4'
+    clip_test = VideoFileClip('test_video.mp4')
+    clip_test_out2 = clip_test.fl_image(find_car_process_video)
+    clip_test_out2.write_videofile(test_out_file2, audio=False)    
+        
+    ### apply pipeline on project video 
+    proj_out_file = OUTPUT_VIDEO_PATH  + str(datetime.now()) + 'project_video_out.mp4'
+    clip_proj = VideoFileClip('project_video.mp4') 
+    clip_proj_out = clip_proj.fl_image(find_car_process_video)
+    clip_proj_out.write_videofile(proj_out_file, audio=False)
+###############################################################################                               
+                               
+######## Alternative Section : Curriculam functions trial #####################      
+###################### Frames Processing - Class Section ######################
+if DEBUG_FLAG == True :
+    color_space, orient, pix_per_cell, cell_per_block, hog_channel, \
+    spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, \
+    hog_feat,n_count = init_param()
+    
+    ####### find a car in images - hog samples processing #####################
+    
+    #### First tried car find methodology - taught in curriculam ##############
+    #####
+    # This approach took input though PICKLE
+    # Function used in as is explained in curriculam
+    # feature analysis parameters are globally declared and initialized
+    #####
+    
+    dist_pickle = pickle.load( open("svc_pickle.p", "rb" ) )
+    svc = dist_pickle["svc"]
+    X_scaler = dist_pickle["scaler"]
+    orient = dist_pickle["orient"]
+    pix_per_cell = dist_pickle["pix_per_cell"]
+    cell_per_block = dist_pickle["cell_per_block"]
+    spatial_size = dist_pickle["spatial_size"]
+    hist_bins = dist_pickle["hist_bins"]
+    
+    # img = mpimg.imread('test_image.jpg')
+    ystart = 400
+    ystop = 656
+    scale = 1.02
+    
+    image = cv2.imread('test_images/test5.jpg') 
+    out_img = find_cars_cu(image, ystart, ystop, scale, svc, X_scaler, \
+                           color_space, orient, pix_per_cell, \
+                           cell_per_block, spatial_size, hist_bins, hist_range)
+    # plt.imshow(out_img)
+    # img = frame_proc(image, lane=True, vis=False)
+    
+    fname = OUTPUT_FIND_CAR + 'find_car_test5.jpg'
     cv2.imwrite(fname, out_img)
     
     print("find_car_test5.jpg - find car function outcome : ", fname)
@@ -365,17 +372,7 @@ if DEBUG_FLAG == True :
 ###############################################################################
 
 
-
-
-
-
-
-
-
-
-
 ############   SECTION - Alternative function trials ##########################
-
 
 ################ find cars - section testing ##################################
 #### Outcome of this section saved in folder: find_cars #######################
@@ -385,14 +382,14 @@ image = cv2.imread('test_images/test4.jpg')
 
 ystart = 400
 ystop = 656
-scale = 1.5
+scale = 2.8
 colorspace = color_space
 
 out_img = find_cars_cu(image, ystart, ystop, scale, svc, X_scaler, \
                            color_space, orient, pix_per_cell, \
                            cell_per_block, spatial_size, hist_bins, hist_range)
 
-fname = OUTPUT_PATH + 'find_cars/test4.jpg'
+fname = OUTPUT_FIND_CAR + 'cu_test4.jpg'
 cv2.imwrite(fname, out_img)
 print("find car (curriculam) function outcome : ", fname)
 print("", )
@@ -402,7 +399,7 @@ image = cv2.imread('test_images/test6.jpg')
 
 ystart = 400
 ystop = 656
-scale = 1.5
+scale = 3.5
 colorspace = color_space
 
 car_boxes = find_cars(image, ystart, ystop, scale, colorspace, hog_channel, 
@@ -414,7 +411,7 @@ print("", )
 
 ### draw boxes in image 
 out_img = draw_boxes(image, car_boxes, color=(0,0,255), thick=6)
-fname = OUTPUT_PATH + 'find_cars/test6.jpg'
+fname = OUTPUT_FIND_CAR + 'cu_test6.jpg'
 cv2.imwrite(fname, out_img)
 print("find car boxes values - draw outcome : ", fname)
 print('...')
@@ -423,7 +420,7 @@ print('...')
 ####################### cover multiple potential area of a image ####
 
 image = cv2.imread('test_images/test1.jpg')
-scale = 2.0
+scale = 3.0
 colorspace = color_space
 boxes = []
 
@@ -445,23 +442,196 @@ rectangles = [item for sublist in boxes for item in sublist]
 out_img = draw_boxes(image, rectangles, color='random', thick=3)
 print('Number of boxes: ', len(rectangles))
 
-fname = OUTPUT_PATH + 'find_cars/test1.jpg'
+fname = OUTPUT_FIND_CAR + 'test1.jpg'
 cv2.imwrite(fname, out_img)
 print("find car boxes values (multi) - draw outcome : ", fname)
 print('...')
 
 
-############ Define Video Processing ##########################################
+######## Section-c finc cars and pipeline functions ###########################
+def frame_proc(img, lane, video, vis):
+    ######## specific parameters defition #############  
+    global heat_p, boxes_p, n_count
+    
+    if (video and n_count%2==0) or not video: # Skip every second video frame
+        heat = np.zeros_like(img[:,:,0]).astype(np.float)
+        boxes = []
+        
+        #### Prepare box list for different position ##########################
+        #find_cars_step(img, ystart, ystop, xstart, xstop, scale, step)
+        boxes = find_cars_step(img, 400, 650, 950, 1280, 2.0, 2)
+        boxes += find_cars_step(img, 400, 500, 950, 1280, 1.5, 2)
+        boxes += find_cars_step(img, 400, 650, 0, 330, 2.0, 2)
+        boxes += find_cars_step(img, 400, 500, 0, 330, 1.5, 2)
+        boxes += find_cars_step(img, 400, 460, 330, 950, 0.75, 3)
+        boxes += find_cars_step(img, 400, 670, 330, 1000, 1.05, 3)
+        #boxes += find_cars_step(img, 350, 680, 800, 1000, .65, 2)
+        #boxes += find_cars_step(img, 350, 680, 800, 1000, .85, 3)
+        #boxes += find_cars_step(img, 350, 680, 800, 1000, 2.5, 2)
+        #boxes += find_cars_step(img, 350, 680, 800, 1000, 2.5, 3)
+        boxes += find_cars_step(img, 380, 680, 1180, 1250, .95, 2)
+        boxes += find_cars_step(img, 380, 680, 1180, 1250, .75, 3)
+        #boxes += find_cars_step(img, 470, 780, 780, 900, 1.8, 2)
+        #boxes += find_cars_step(img, 470, 780, 780, 900, 2.5, 3)
+        #boxes += find_cars_step(img, 370, 430, 780, 850, 1.2, 2)
+        #boxes += find_cars_step(img, 370, 430, 780, 850, 1.5, 3)
+        #######################################################################
+        
+        for track in track_list:
+            y_loc = track[1]+track[3]
+            lane_w = (y_loc*2.841-1170.0)/3.0
+            if lane_w < 96:
+                lane_w = 96
+            lane_h = lane_w/1.2
+            lane_w = max(lane_w, track[2])
+            xs = track[0]-lane_w
+            xf = track[0]+lane_w
+            if track[1] < Y_MIN:
+                track[1] = Y_MIN
+            ys = track[1]-lane_h
+            yf = track[1]+lane_h
+            if xs < 0: xs=0
+            if xf > 1280: xf=1280
+            if ys < Y_MIN - 40: ys=Y_MIN - 40
+            if yf > 720: yf=720
+            size_sq = lane_w / (0.015*lane_w+0.3)
+            scale = size_sq / 64.0
+            # Apply multi scale image windows 
+            boxes+=find_cars(img, ys, yf, xs, xf, scale, 2)
+            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.25, 2)
+            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.5, 2)
+            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.75, 2)
+            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.05, 2)
+            if vis:
+                cv2.rectangle(img, (int(xs), int(ys)), (int(xf), int(yf)), color=(0,255,0), thickness=3)
+        heat = add_heat(heat, boxes)
+        heat_l = heat_p + heat
+        heat_p = heat
+        heat_l = apply_threshold(heat_l,THRES) # Apply threshold to help remove false positives
+        # Visualize the heatmap when displaying    
+        heatmap = np.clip(heat_l, 0, 255)
+        # Find final boxes from heatmap using label function
+        labels = label(heatmap)
+        #print((labels[0]))
+        cars_boxes = draw_labeled_bboxes(labels)
+        boxes_p = cars_boxes
+        
+    else:
+        cars_boxes = boxes_p
+    if lane: #If we was asked to draw the lane line, do it
+        if video:
+            img = laneline.draw_lane(img, True)
+        else:
+            img = laneline.draw_lane(img, False)
+    imp = draw_boxes(np.copy(img), cars_boxes, color=(0, 0, 255), thick=6)
+    if vis:
+        imp = draw_boxes(imp, boxes, color=(0, 255, 255), thick=2)
+        for track in track_list:
+            cv2.circle(imp, (int(track[0]), int(track[1])), 5, color=(255, 0, 255), thickness=4)
+    n_count += 1
+    return imp
+
+
+def find_cars_step(img, ystart, ystop, xstart, xstop, scale, step):
+    
+    color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, \
+    hist_bins, hist_range, spatial_feat, hist_feat, hog_feat,n_count = init_param()
+    
+    boxes = []  # identified rectangles variable
+    
+    draw_img = np.zeros_like(img)   
+    img_tosearch = img[ystart:ystop,xstart:xstop,:]
+    ctrans_tosearch = convert_color(img_tosearch, color_space)
+    
+    if scale != 1:
+        imshape = ctrans_tosearch.shape
+        ctrans_tosearch = cv2.resize(ctrans_tosearch, (np.int(imshape[1]/scale), np.int(imshape[0]/scale)))
+        
+    if hog_channel == 'ALL':
+        ch1 = ctrans_tosearch[:,:,0]
+        ch2 = ctrans_tosearch[:,:,1]
+        ch3 = ctrans_tosearch[:,:,2]
+    else: 
+        ch1 = ctrans_tosearch[:,:,hog_channel]    
+    
+    # Define blocks and steps as above
+    nxblocks = (ch1.shape[1] // pix_per_cell)-1
+    nyblocks = (ch1.shape[0] // pix_per_cell)-1 
+    nfeat_per_block = orient*cell_per_block**2
+    
+    # 64 was the orginal sampling rate, with 8 cells and 8 pix per cell
+    window = 64
+    nblocks_per_window = (window // pix_per_cell) -1
+    cells_per_step = step  # Instead of overlap, define how many cells to step
+    nxsteps = (nxblocks - nblocks_per_window) // cells_per_step
+    nysteps = (nyblocks - nblocks_per_window) // cells_per_step
+    
+    # Compute individual channel HOG features for the entire image
+    hog1 = get_hog_features(ch1, orient, pix_per_cell, cell_per_block, vis=False, feature_vec=False)   
+    if hog_channel == 'ALL':
+        hog2 = get_hog_features(ch2, orient, pix_per_cell, cell_per_block, vis=False, feature_vec=False)
+        hog3 = get_hog_features(ch3, orient, pix_per_cell, cell_per_block, vis=False, feature_vec=False)
+       
+    for xb in range(nxsteps):
+        for yb in range(nysteps):
+            ypos = yb*cells_per_step
+            xpos = xb*cells_per_step
+            
+            # Extract HOG for this patch           
+            hog_feat1 = hog1[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel()
+            if hog_channel == 'ALL':
+                hog_feat2 = hog2[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel() 
+                hog_feat3 = hog3[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel() 
+                hog_features = np.hstack((hog_feat1, hog_feat2, hog_feat3))
+            else:
+                hog_features = hog_feat1
+            
+            xleft = xpos*pix_per_cell
+            ytop = ypos*pix_per_cell
+            
+            # Extract the image patch
+            subimg = ctrans_tosearch[ytop:ytop+window, xleft:xleft+window]           
+            # Get color features
+            spatial_features = bin_spatial(subimg, spatial_size)
+            hist_features = color_hist(subimg, hist_bins, hist_range)
+            # Scale features and make a prediction
+            test_features = X_scaler.transform(np.hstack((spatial_features, hist_features, hog_features)).reshape(1, -1)) 
+            test_prediction = svc.predict(test_features)
+            #test_features = np.hstack(hog1).reshape(1, -1)
+            test_prediction = svc.predict(test_features)
+            
+            if test_prediction == 1:
+                xbox_left = np.int(xleft*scale)+xstart
+                ytop_draw = np.int(ytop*scale)
+                win_draw = np.int(window*scale)
+                boxes.append(((int(xbox_left), int(ytop_draw+ystart)),
+                              (int(xbox_left+win_draw),
+                               int(ytop_draw+win_draw+ystart))))
+    return boxes
+
+
+############ Implement & Test - Video Processing ##############################
+
+###### Project video - to apply pipeline
 from moviepy.editor import VideoFileClip
-n_count = 0
 laneline.init_params(0.0)
+n_count = 0
+
 def process_image(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     return cv2.cvtColor(frame_proc(image, lane=True, video=True, vis=False), \
                         cv2.COLOR_BGR2RGB)
 
-output_v = 'project_video_processed' + str(datetime.now()) + '.mp4'
+#### Project output
+output_p = OUTPUT_VIDEO_PATH + 'project_video_processed' + str(datetime.now()) + '.mp4'
 clip1 = VideoFileClip("project_video.mp4")
-#clip = clip1.fl_image(process_image)
-#clip.write_videofile(output_v, audio=False)
+clip = clip1.fl_image(process_image)
+clip.write_videofile(output_p, audio=False)
 
+#### Test output -1 
+output_v1 = OUTPUT_VIDEO_PATH + 'test_video_processed' + str(datetime.now()) + '.mp4'
+clip2 = VideoFileClip("test_video.mp4")
+clip_o = clip2.fl_image(process_image)
+clip_o.write_videofile(output_v1, audio=False)
+
+#################### end of frame - process pipeline ##########################

@@ -22,3 +22,27 @@ global hog_feat              # HOG features on or off
 
 # global n_count               # Frame counter
   
+
+#### Frames processing parameters
+global THRES          # Minimal overlapping boxes
+global ALPHA          # Filter parameter, weight of the previous measurements
+global track_list     #[np.array([880, 440, 76, 76])]
+# track_list += [np.array([1200, 480, 124, 124])]
+global THRES_LEN                   # Thresold
+global Y_MIN
+global heat_p         # Store prev heat image
+global boxes_p        # Store prev car boxes
+global n_count          # Frame counter
+
+#### Declaration for classifier - global, initialized in main function 
+global X_scaler
+global svc
+
+global THRES            # Minimal overlapping boxes
+global ALPHA            # Filter parameter, weight of the previous measurements
+global track_list       #[np.array([880, 440, 76, 76])]
+# track_list += [np.array([1200, 480, 124, 124])]
+global THRES_LEN        # Thresold
+global Y_MIN
+global heat_p           # Store prev heat image
+global boxes_p          # Store prev car boxes

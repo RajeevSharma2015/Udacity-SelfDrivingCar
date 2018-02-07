@@ -31,7 +31,18 @@ def init_param():
     hist_feat = True              # Histogram features on or off
     hog_feat = True               # HOG features on or off
     n_count = 0                   # Frame counter
-    return color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, hog_feat,n_count 
+    return color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, hog_feat, n_count
+
+def init_car_find():
+    THRES = 3          # Minimal overlapping boxes
+    ALPHA = 0.75       # Filter parameter, weight of the previous measurements
+    track_list = []    #[np.array([880, 440, 76, 76])]
+    # track_list += [np.array([1200, 480, 124, 124])]
+    THRES_LEN = 32                   # Thresold
+    Y_MIN = 440
+    heat_p = np.zeros((720, 1280))   # Store prev heat image
+    boxes_p = []                     # Store prev car boxes
+    return THRES, ALPHA, track_list, THRES_LEN, Y_MIN, heat_p, boxes_p 
 
 ########## Section-A Lessions Learned functions ###############################
 # Define a function to return HOG features and visualization
@@ -302,8 +313,12 @@ def track_to_box(p): # Create box coordinates out of its center and span
 
 
 def draw_labeled_bboxes(labels):
+    
+    THRES, ALPHA, track_list, THRES_LEN, Y_MIN, heat_p, boxes_p  = init_car_find()
+    
     global track_list
     track_list_l = []
+     
     for car_number in range(1, labels[1]+1):
         # Find pixels with each car_number label value
         nonzero = (labels[0] == car_number).nonzero()
@@ -343,80 +358,6 @@ def draw_labeled_bboxes(labels):
         #print(track_to_box(track))
         boxes.append(track_to_box(track))
     return boxes
-
-
-
-######## Section-c finc cars and pipeline functions ###########################
-
-def frame_proc(img, svc, lane, video, vis, X_scaler):
-    ######## specific parameters defition #############
-    global heat_p, boxes_p, n_count
-    
-    if (video and n_count%2==0) or not video: # Skip every second video frame
-        heat = np.zeros_like(img[:,:,0]).astype(np.float)
-        boxes = []
-        
-        #### Prepare box list for different position ################
-        #find_cars_step(img, ystart, ystop, xstart, xstop, scale, step)
-        boxes = find_cars_step(img, 400, 650, 950, 1280, 2.0, 2, svc, None)
-        boxes += find_cars_step(img, 400, 500, 950, 1280, 1.5, 2, svc, None)
-        boxes += find_cars_step(img, 400, 650, 0, 330, 2.0, 2, svc, None)
-        boxes += find_cars_step(img, 400, 500, 0, 330, 1.5, 2, svc, None)
-        boxes += find_cars_step(img, 400, 460, 330, 950, 0.75, 3, svc, None)
-        #############################################################
-        
-        for track in track_list:
-            y_loc = track[1]+track[3]
-            lane_w = (y_loc*2.841-1170.0)/3.0
-            if lane_w < 96:
-                lane_w = 96
-            lane_h = lane_w/1.2
-            lane_w = max(lane_w, track[2])
-            xs = track[0]-lane_w
-            xf = track[0]+lane_w
-            if track[1] < Y_MIN:
-                track[1] = Y_MIN
-            ys = track[1]-lane_h
-            yf = track[1]+lane_h
-            if xs < 0: xs=0
-            if xf > 1280: xf=1280
-            if ys < Y_MIN - 40: ys=Y_MIN - 40
-            if yf > 720: yf=720
-            size_sq = lane_w / (0.015*lane_w+0.3)
-            scale = size_sq / 64.0
-            # Apply multi scale image windows 
-            boxes+=find_cars(img, ys, yf, xs, xf, scale, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.25, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.5, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.75, 2)
-            if vis:
-                cv2.rectangle(img, (int(xs), int(ys)), (int(xf), int(yf)), color=(0,255,0), thickness=3)
-        heat = add_heat(heat, boxes)
-        heat_l = heat_p + heat
-        heat_p = heat
-        heat_l = apply_threshold(heat_l,THRES) # Apply threshold to help remove false positives
-        # Visualize the heatmap when displaying    
-        heatmap = np.clip(heat_l, 0, 255)
-        # Find final boxes from heatmap using label function
-        labels = label(heatmap)
-        #print((labels[0]))
-        cars_boxes = draw_labeled_bboxes(labels)
-        boxes_p = cars_boxes
-        
-    else:
-        cars_boxes = boxes_p
-    if lane: #If we was asked to draw the lane line, do it
-        if video:
-            img = laneline.draw_lane(img, True)
-        else:
-            img = laneline.draw_lane(img, False)
-    imp = draw_boxes(np.copy(img), cars_boxes, color=(0, 0, 255), thick=6)
-    if vis:
-        imp = draw_boxes(imp, boxes, color=(0, 255, 255), thick=2)
-        for track in track_list:
-            cv2.circle(imp, (int(track[0]), int(track[1])), 5, color=(255, 0, 255), thickness=4)
-    n_count += 1
-    return imp
 
 
 # Define a single function that can extract features using hog sub-sampling and make predictions
@@ -499,6 +440,7 @@ def find_cars_cu(img, ystart, ystop, scale, svc, X_scaler, col_space, orient, pi
             test_prediction = svc.predict(test_features)
             
             if test_prediction == 1:
+                #print('test prediction TRUE')
                 xbox_left = np.int(xleft*scale)
                 ytop_draw = np.int(ytop*scale)
                 win_draw = np.int(window*scale)
@@ -506,67 +448,7 @@ def find_cars_cu(img, ystart, ystop, scale, svc, X_scaler, col_space, orient, pi
                 
     return draw_img
 
-def find_cars_step(img, ystart, ystop, xstart, xstop, scale, step, svc, X_scaler):
-     
-    color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, \
-    hist_bins, hist_range, spatial_feat, hist_feat, hog_feat,n_count = init_param()
-    
-    boxes = []  # identified rectangles variable
-    
-    draw_img = np.zeros_like(img)   
-    img_tosearch = img[ystart:ystop,xstart:xstop,:]
-    ctrans_tosearch = convert_color(img_tosearch, color_space)
-    
-    if scale != 1:
-        imshape = ctrans_tosearch.shape
-        ctrans_tosearch = cv2.resize(ctrans_tosearch, (np.int(imshape[1]/scale), np.int(imshape[0]/scale)))       
-    ch1 = ctrans_tosearch[:,:,0]
-    ch2 = ctrans_tosearch[:,:,1]
-    ch3 = ctrans_tosearch[:,:,2]
-    # Define blocks and steps as above
-    nxblocks = (ch1.shape[1] // pix_per_cell)-1
-    nyblocks = (ch1.shape[0] // pix_per_cell)-1 
-    nfeat_per_block = orient*cell_per_block**2
-    
-    # 64 was the orginal sampling rate, with 8 cells and 8 pix per cell
-    window = 64
-    nblocks_per_window = (window // pix_per_cell) -1
-    cells_per_step = step  # Instead of overlap, define how many cells to step
-    nxsteps = (nxblocks - nblocks_per_window) // cells_per_step
-    nysteps = (nyblocks - nblocks_per_window) // cells_per_step
-    # Compute individual channel HOG features for the entire image
-    hog1 = get_hog_features(ch1, orient, pix_per_cell, cell_per_block, vis=False, feature_vec=False)
-    
-    for xb in range(nxsteps):
-        for yb in range(nysteps):
-            ypos = yb*cells_per_step
-            xpos = xb*cells_per_step
-            # Extract HOG for this patch
-            hog_features = hog1[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel() 
-            xleft = xpos*pix_per_cell
-            ytop = ypos*pix_per_cell
-            
-            if X_scaler != None:
-                # Extract the image patch
-                subimg = ctrans_tosearch[ytop:ytop+window, xleft:xleft+window]           
-                # Get color features
-                spatial_features = bin_spatial(subimg, spatial_size)
-                hist_features = color_hist(subimg, hist_bins, hist_range)
-                # Scale features and make a prediction
-                test_features = X_scaler.transform(np.hstack((spatial_features, hist_features, hog_features)).reshape(1, -1)) 
-                test_prediction = svc.predict(test_features)
-            else:
-                test_features = np.hstack(hog1).reshape(1, -1)
-                test_prediction = svc.predict(test_features)
-            
-            if test_prediction == 1:
-                xbox_left = np.int(xleft*scale)+xstart
-                ytop_draw = np.int(ytop*scale)
-                win_draw = np.int(window*scale)
-                boxes.append(((int(xbox_left), int(ytop_draw+ystart)),
-                              (int(xbox_left+win_draw),
-                               int(ytop_draw+win_draw+ystart))))
-    return boxes
+
 
 
 ########## Define a single function - identify cars and visualize #############
@@ -677,6 +559,7 @@ def find_cars(img, ystart, ystop, scale, cspace, hog_channel, svc, X_scaler,
                 test_prediction = svc.predict(test_features)
             
             if test_prediction == 1 or show_all_rectangles:
+               # print('Test prediction TRUE')
                 xbox_left = np.int(xleft*scale)
                 ytop_draw = np.int(ytop*scale)
                 win_draw = np.int(window*scale)
