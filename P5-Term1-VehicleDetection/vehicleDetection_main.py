@@ -38,7 +38,7 @@ global svc
 ### System Parameters #########################################################
 DEBUG_FLAG = 'False'
 REDUCE_SAMPLE = 'True'
-sample_size = 2500           # Limiting number of samples
+sample_size = 800           # Limiting number of samples
 VEHICLES = ''               # Path for vehicle data
 NOT_VEHICLES = ''           # Path for Not Vehicle data
 projectDir1 = './vehicles/vehicles/GTI*/'             # GTI vehicles path
@@ -463,18 +463,21 @@ def frame_proc(img, lane, video, vis):
         boxes += find_cars_step(img, 400, 500, 950, 1280, 1.5, 2)
         boxes += find_cars_step(img, 400, 650, 0, 330, 2.0, 2)
         boxes += find_cars_step(img, 400, 500, 0, 330, 1.5, 2)
-        boxes += find_cars_step(img, 400, 460, 330, 950, 0.75, 3)
-        boxes += find_cars_step(img, 400, 670, 330, 1000, 1.05, 3)
-        #boxes += find_cars_step(img, 350, 680, 800, 1000, .65, 2)
-        #boxes += find_cars_step(img, 350, 680, 800, 1000, .85, 3)
-        #boxes += find_cars_step(img, 350, 680, 800, 1000, 2.5, 2)
-        #boxes += find_cars_step(img, 350, 680, 800, 1000, 2.5, 3)
-        boxes += find_cars_step(img, 380, 680, 1180, 1250, .95, 2)
-        boxes += find_cars_step(img, 380, 680, 1180, 1250, .75, 3)
-        #boxes += find_cars_step(img, 470, 780, 780, 900, 1.8, 2)
-        #boxes += find_cars_step(img, 470, 780, 780, 900, 2.5, 3)
-        #boxes += find_cars_step(img, 370, 430, 780, 850, 1.2, 2)
-        #boxes += find_cars_step(img, 370, 430, 780, 850, 1.5, 3)
+        
+        boxes += find_cars_step(img, 400, 460, 350, 950, .75, 2)
+        boxes += find_cars_step(img, 400, 670, 350, 1000, .75, 2)
+        boxes += find_cars_step(img, 400, 460, 350, 950, 1.5, 2)
+        boxes += find_cars_step(img, 400, 670, 350, 1000, 1.5, 2)
+        boxes += find_cars_step(img, 400, 460, 350, 950, 2, 2)
+        boxes += find_cars_step(img, 400, 670, 350, 1000, 2, 2)
+       
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, .75, 2)
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, .75, 2)
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, 1.5, 2)
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, 1.5, 2)
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, 2, 2)
+        boxes += find_cars_step(img, 380, 680, 1000, 1250, 2, 2)
+   
         #######################################################################
         
         for track in track_list:
@@ -625,6 +628,7 @@ def process_image(image):
 #### Project output
 output_p = OUTPUT_VIDEO_PATH + 'project_video_processed' + str(datetime.now()) + '.mp4'
 clip1 = VideoFileClip("project_video.mp4")
+#clip1 = VideoFileClip("project_video.mp4").subclip(25,30)
 clip = clip1.fl_image(process_image)
 clip.write_videofile(output_p, audio=False)
 
