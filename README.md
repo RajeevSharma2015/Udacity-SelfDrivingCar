@@ -22,12 +22,10 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
     Project: Vehicle Detection and Tracking
     
 ##### Project Result - outcome example 
-![Finding Lane Lines on the Road](examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
+![ **Finding Lane Lines on the Road - Solid Yellow Curve Lines** ](examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
 
-<img src="examples/Images/solidYellowCurve_modified.jpg" width="480" alt="Combined Image" />
     
-Traffic Sign Classifier
-<img src="examples/Images/traffic_sign.png" width="480" alt="Combined Image" />
+![ **Traffic Sign Classifier - German Data Recognition ** ](examples/Images/traffic_sign.png "Traffic Sign Classifier")
     
 Behavioral Cloning
     
