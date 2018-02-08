@@ -24,21 +24,23 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
 #### Project Result - outcome example 
 Just to highlight ojective of project sampled outcome files are demonstrated here, a detailed readme file is also available in sub project folders (each task of program) in this repository. 
 
-##### Finding Lane Lines on the Road - Solid Yellow Curve Lines
+#### Finding Lane Lines on the Road - Solid Yellow Curve Lines
 A depiction of lanes identified in a sampled image file.
 ![ Finding Lane Lines on the Road - Solid Yellow Curve Lines ](examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
 
-##### Traffic Sign Classifier - German Data Recognition
+#### Traffic Sign Classifier - German Data Recognition
 visualisation of a few sampled data used in learning of neural networks for recognition of test data's.
 ![ Traffic Sign Classifier - German Data Recognition ](examples/Images/traffic_sign.png "Traffic Sign Classifier")
     
-##### Behavioral Cloning - Convolution Neural Network (CNN) for drive learning
+#### Behavioral Cloning - Convolution Neural Network (CNN) for drive learning
 Depicted here how through a simulator drive data for neural network learning collected. 
 ![ Drive Behaviour Cloning - Simulation Data Collection ](examples/Images/DriveVisualisation-DataCollection.png "Drive Data Collection")
 
-##### Advanced Lane Finding
+#### Advanced Lane Finding
+Applied advance techniques of images processing to identify multi-colour lines, sections of lanes marked on roads efficiently. One outcome is depicted herein as sample. 
+![ Advance image processing - lane finding ](examples/Images/draw-data-lane.png "lanes marking identification on roads")
 
-##### Vehicle Detection and Tracking
+#### Vehicle Detection and Tracking
     
 
 
