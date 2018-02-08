@@ -20,6 +20,7 @@ For details on this and other projects, see my [website](https://github.com/raje
 - `svc_pickle.p' - an input data file for SVC classifier training and testing [curriculam test data]
 - `/output_images/` - a folder for result images and video's
 - `project_video.mp4` - the original raw video from [Udacity](https://github.com/udacity/CarND-Vehicle-Detection)
+- `/output_images/processed_video` - vehicle detection module execution [output video's] (https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/tree/master/P5-Term1-VehicleDetection/output_images/processed_video)
 
 **Note:** The repository does not contain any training images. You have to download and unzip the image datasets of vehicles and 
 non-vehicles provided by Udacity and place them in appropriate directories on your own.
