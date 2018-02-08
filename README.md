@@ -22,7 +22,9 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
     Project: Vehicle Detection and Tracking
     
 ##### Project Result - outcome example 
-Finding Lane Lines on the Road
+[! Finding Lane Lines on the Road] (examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
+
+
 <img src="examples/Images/solidYellowCurve_modified.jpg" width="480" alt="Combined Image" />
     
 Traffic Sign Classifier
