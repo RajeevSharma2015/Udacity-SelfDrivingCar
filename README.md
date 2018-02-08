@@ -23,10 +23,10 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
     
 ##### Project Result - outcome example 
 Finding Lane Lines on the Road
-<img src="examples/solidYellowCurve_modified.jpg" width="480" alt="Combined Image" />
+<img src="examples/Images/solidYellowCurve_modified.jpg" width="480" alt="Combined Image" />
     
 Traffic Sign Classifier
-<img src="examples/traffic_sign.png" width="480" alt="Combined Image" />
+<img src="examples/Images/traffic_sign.png" width="480" alt="Combined Image" />
     
 Behavioral Cloning
     
