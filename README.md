@@ -3,6 +3,8 @@
 
 Udacity Self Driving Car - Nano degree program supposed to complete 14 project assignments. This repository maintain different project work activity, code, input data, outcome/result, writeup for submissions and domains miscellenous learning. Advance nano degree program for self driving car has 3 terms (3 months each). 
 
+<img src="examples/Self_DriveCar.jpeg" width="480" alt="Combined Image" />
+
 #### CURRENT STATUS OF MY COURSE : Term-1 supposed to complete by FEB 2018
 
 ## About Program & Core Curriculum
