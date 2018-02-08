@@ -24,7 +24,6 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
 ##### Project Result - outcome example 
 ![Finding Lane Lines on the Road](examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
 
-
 <img src="examples/Images/solidYellowCurve_modified.jpg" width="480" alt="Combined Image" />
     
 Traffic Sign Classifier
