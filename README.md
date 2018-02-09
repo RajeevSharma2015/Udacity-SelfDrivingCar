@@ -41,8 +41,8 @@ Applied advance techniques of images processing to identify multi-colour lines, 
 ![ Advance image processing - lane finding ](examples/Images/draw-data-lane.png "lanes marking identification on roads")
 
 #### Vehicle Detection and Tracking
-    
-
+HOG features analysis, SVM classifier, heat map analysis for vehicle and non-vehicles done to identify roadside object and their position. Also same have been integrated with lane identification outcome of previous project. Sample image depicts a frame analysis wherein cars identified and labelled with boxes.      
+![ Vehicle Detection & Tracking - laneidentification integration ](examples/Images/test_imagesslide_window_test5.jpg "vehicle identification and tracking on roads")
 
 ### Part 2 : Sensor Fusion, Localization, and Control
 
