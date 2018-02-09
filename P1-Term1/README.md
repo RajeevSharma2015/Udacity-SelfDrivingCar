@@ -53,9 +53,11 @@ A browser window will appear showing the contents of the current directory.  Cli
 **Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
 
 ## Project Writeup - Rajeev Sharma
-Goal and objective of this project is to make a pipeline to identify lanes line marking. Attached project report desctibe how this achieved ![ Project Writeup - Lanes lines identification ](Term1-Project : Write-up Rajeev Sharma.pdf)
+Goal and objective of this project is to make a pipeline to identify lanes line marking. Attached project report desctibe how this achieved ![ Project Writeup - Lanes lines identification ](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/P1-Term1/Term1-Project%20:%20Write-up%20Rajeev%20Sharma.pdf)
 
 ## Project Outcome - Examples 
+
+
 
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
