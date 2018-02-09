@@ -9,6 +9,8 @@ finding algorithm was added from the fourth task of the Nanodegree program.
 
 For details on this and other projects, see my [website](https://github.com/rajeevsharma2015)
 
+Visualisation examples of find car process outcome for different images.  
+
 ![ Find Car Process - Outcome ](output_images/test_images/find_car_process_test6.jpg)
 ![ Find Car's Processes - Outcome ](output_images/test_images/test_imagesslide_window_test5.jpg)
 ![ Find Car's Processes - Outcome ](output_images/test_images/test6.jpg)
