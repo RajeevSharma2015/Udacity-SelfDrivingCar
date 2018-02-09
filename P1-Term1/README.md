@@ -71,6 +71,10 @@ Goal and objective of this project is to make a pipeline to identify lanes line 
 
 <img src="test_videos_output/challenge.mp4" width="480" alt="Combined Image" />
 
+<video width="480" height="240" controls>
+  <source src="test_videos_output/challenge.mp4" type="video/mp4">
+</video>
+
 
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
