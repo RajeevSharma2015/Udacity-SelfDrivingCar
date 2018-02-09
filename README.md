@@ -46,7 +46,7 @@ Applied advance techniques of images processing to identify multi-colour lines, 
 HOG features analysis, SVM classifier, heat map analysis for vehicle and non-vehicles done to identify roadside object and their position. Also same have been integrated with lane identification outcome of previous project. Sample image depicts a frame analysis wherein cars identified and labelled with boxes.      
 ![ Vehicle Detection & Tracking - laneidentification integration ](examples/Images/test_imagesslide_window_test5.jpg "vehicle identification and tracking on roads")
 
-##### Video Outcomes of Part 1 projects
+#### Video Outcomes of Part 1 projects
 (1) Finding Lane Lines on the Road - [Watch the video](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing)
 
 (2) Behavioral Cloning - CNN Drive Learning - [Watch the video](https://drive.google.com/file/d/1MJrt0l8EXn4ZZpXhuX_PjlNrsRMan8F1/view?usp=sharing)
