@@ -33,6 +33,30 @@ The goals / steps of this project are the following:
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
+## Project Writeup - Rajeev Sharma
+Attached project report describes how project objectives achieved ![ Project Writeup ](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/P2-Term1/Traffic_Sign_Classifier.md)
+
+## Project Outcome - Examples 
+Images translated from RGB scale to grayscale for image processing, below given is a sampled depiction of same.
+<img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
+
+Below shown examples are post processed outcome of various type of lane lines identifications.
+<img src="examples/output_18_0.png" width="480" alt="Combined Image" />
+
+<img src="examples/output_19_0.png" width="480" alt="Combined Image" />
+
+<img src="examples/output_20_0.png" width="480" alt="Combined Image" />
+
+<img src="examples/output_23_0.png" width="480" alt="Combined Image" />
+
+<img src="examples/output_24_0.png" width="480" alt="Combined Image" />
+
+Video link gives pipeline outcome. 
+
+ [ ![Watch the video](<img src="test_images_out/solidYellowCurve2_modified.jpg" width="480" alt="Combined Image" />) ](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing).
+
+
+
 ### Dependencies
 This lab requires:
 
