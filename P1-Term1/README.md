@@ -63,12 +63,9 @@ Goal and objective of this project is to make a pipeline to identify lanes line 
 
 <img src="examples/line-segments-example.jpg" width="480" alt="Combined Image" />
 
-<img src="test_images_out/solidYellowCurve2_modified.jpg" width="480" alt="Combined Image" />
-
 <img src="test_images_out/whiteCarLaneSwitch_modified.jpg" width="480" alt="Combined Image" />
 
- [![Watch the video](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/P1-Term1/test_images_out/whiteCarLaneSwitch_modified.jpg)](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/P1-Term1/test_videos_output/challenge.mp4).
-
+ [![Watch the video](<img src="test_images_out/solidYellowCurve2_modified.jpg" width="480" alt="Combined Image" />)](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing).
 
 
 ## How to write a README
