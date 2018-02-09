@@ -37,7 +37,8 @@ Depicted here how through a simulator drive data for neural network learning col
 ![ Drive Behaviour Cloning - Simulation Data Collection ](examples/Images/DriveVisualisation-DataCollection.png "Drive Data Collection")
 
 #### Advanced Lane Finding
-Applied advance techniques of images processing to identify multi-colour lines, sections of lanes marked on roads efficiently. One outcome is depicted herein as sample. 
+Applied advance techniques of images processing to identify multi-colour lines, sections of lanes marked on roads efficiently. One outcome depicted herein as a sample outline lane identification, road turn radius and relative position. 
+
 ![ Advance image processing - lane finding ](examples/Images/draw-data-lane.png "lanes marking identification on roads")
 
 #### Vehicle Detection and Tracking
