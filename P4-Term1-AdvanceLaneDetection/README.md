@@ -34,6 +34,21 @@ The `challenge_video.mp4` video is an extra (and optional) challenge for you if 
 
 If you're feeling ambitious (again, totally optional though), don't stop there!  We encourage you to go out and take video of your own, calibrate your camera and show us how you would implement this project from scratch!
 
+## Project Outcome Examples
+Draw Data lanes outcome visualisation
+![Draw Data Lanes](example/example-images/draw-data-lane.png)
+
+Run pipeline images for lines identification. 
+![Draw Data Lanes](example/example-images/run-pipeline-images.png)
+
+Run pipeline images for lines identification. 
+![Draw Data Lanes](example/example-images/run-pipeline-images.png)
+
+Images color pre-processing in different image formats
+![Draw Data Lanes](example/example-images/hls-s-channel.png)
+![Draw Data Lanes](example/example-images/lab-b-unwarp.png)
+![Draw Data Lanes](example/example-images/sobel-magnitude.png)
+
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
