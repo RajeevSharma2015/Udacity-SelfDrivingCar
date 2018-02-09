@@ -1,6 +1,8 @@
 # Vehicle-Detection-and-Tracking
 ### Udacity Self-Driving Car Engineer Nanodegree. Project: Vehicle Detection and Tracking
 
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+
 This Project is the fifth task (Term-1 : last project) of the Udacity Self-Driving Car Nanodegree program. The main goal of the project is to create 
 a software pipeline to identify vehicles in a video from a front-facing camera on a car. Additionally, an [Advanced Lane Line](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/new/master/P5-Term1-VehicleDetection) 
 finding algorithm was added from the fourth task of the Nanodegree program.
