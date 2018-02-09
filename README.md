@@ -22,10 +22,11 @@ In this term, you'll become an expert in applying Computer Vision and Deep Learn
     Project: Vehicle Detection and Tracking
     
 #### Project Result - outcome example 
-Just to highlight ojective of project sampled outcome files are demonstrated here, a detailed readme file is also available in sub project folders (each task of program) in this repository. 
+Just to highlight ojective of project sampled outcome files are demonstrated here, a detailed readme file is also available in sub project folders (each task objective ando program setup) in this repository. 
 
 #### Finding Lane Lines on the Road - Solid Yellow Curve Lines
-A depiction of lanes identified in a sampled image file.
+A depiction of identification of lanes lines marking in a sampled image file. Also visualized same by marking through RED colour lines.
+
 ![ Finding Lane Lines on the Road - Solid Yellow Curve Lines ](examples/Images/solidYellowCurve_modified.jpg "Solid Yellow Curve Lines")
 
 #### Traffic Sign Classifier - German Data Recognition
