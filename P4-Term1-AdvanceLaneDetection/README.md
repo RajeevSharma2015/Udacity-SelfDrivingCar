@@ -41,9 +41,6 @@ Draw Data lanes outcome visualisation
 Run pipeline images for lines identification. 
 ![Draw Data Lanes](example/example-images/run-pipeline-images.png)
 
-Run pipeline images for lines identification. 
-![Draw Data Lanes](example/example-images/run-pipeline-images.png)
-
 Images color pre-processing in different image formats
 ![Draw Data Lanes](example/example-images/hls-s-channel.png)
 ![Draw Data Lanes](example/example-images/lab-b-unwarp.png)
