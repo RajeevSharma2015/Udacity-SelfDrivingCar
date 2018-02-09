@@ -56,16 +56,19 @@ A browser window will appear showing the contents of the current directory.  Cli
 Goal and objective of this project is to make a pipeline to identify lanes line marking. Attached project report desctibe how this achieved ![ Project Writeup - Lanes lines identification ](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/P1-Term1/Term1-Project%20:%20Write-up%20Rajeev%20Sharma.pdf)
 
 ## Project Outcome - Examples 
-
+Images translated from RGB scale to grayscale for image processing, below given is a sampled depiction of same.
 <img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
 
+Below shown examples are post processed outcome of various type of lane lines identifications.
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
 <img src="examples/line-segments-example.jpg" width="480" alt="Combined Image" />
 
 <img src="test_images_out/whiteCarLaneSwitch_modified.jpg" width="480" alt="Combined Image" />
 
- [![Watch the video](<img src="test_images_out/solidYellowCurve2_modified.jpg" width="480" alt="Combined Image" />)](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing).
+Video link gives pipeline outcome. 
+
+ [ ![Watch the video](<img src="test_images_out/solidYellowCurve2_modified.jpg" width="480" alt="Combined Image" />) ](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing).
 
 
 ## How to write a README
