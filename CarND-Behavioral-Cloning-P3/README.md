@@ -2,6 +2,11 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
+Reference DNN and Convolution neural network to clone driving behaviour.
+
+<img src="examples/CNN-Architecture.png" width="580" alt="Combined Image" />
+
+
 Overview
 ---
 This repository contains starting files for the Behavioral Cloning Project.
@@ -36,6 +41,24 @@ The goals / steps of this project are the following:
 * Design, train and validate a model that predicts a steering angle from image data
 * Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
 * Summarize the results with a written report
+
+## Project Writeup - Rajeev Sharma
+Attached project report describes how project objectives achieved ![ Project Writeup ](https://github.com/RajeevSharma2015/Udacity-SelfDrivingCar/blob/master/CarND-Behavioral-Cloning-P3/writeup_report.pdf)
+
+## Project Outcome - Examples 
+Images depicts a few sample of project execution and step by step outcomes drived in processes. 
+
+Image depict how through simulator training data for autonomous drive gathered
+<img src="examples/DriveVisualisation-DataCollection.png" width="580" alt="Combined Image" />
+
+A sampled image depiction gathered through simulator (autonomous drive training mode). Centre lane drive picture from a front facing camera.
+<img src="examples/centre_laneDrive-picture.jpg" width="580" alt="Combined Image" />
+
+Python program used to realise a CNN and train same through the gathered data. The training execution logs (debug print) came on ubuntu terminal window, same got captured in a file for reference and displayed as outcome. Learned model get saved in a seperate file for car driving.
+<img src="examples/TrainingProcess-SystemLogs.png" width="580" alt="Combined Image" />
+
+#### Video Outcomes of Part 1 projects
+Through simulator and a learned CNN model drive a car, for outcome result pl - [ Watch this video ](https://drive.google.com/file/d/1MJrt0l8EXn4ZZpXhuX_PjlNrsRMan8F1/view?usp=sharing)
 
 ### Dependencies
 This lab requires:
