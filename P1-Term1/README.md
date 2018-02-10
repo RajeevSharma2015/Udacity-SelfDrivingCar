@@ -6,7 +6,7 @@
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
 #### Sampled outcome - a resultant video
- Lanes lined identification pipeline - [!Watch the video](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing)
+ Lanes lined identification pipeline - [ Watch this video ](https://drive.google.com/file/d/1ZOZOMMk7u63JD6jU6fZaq2dH-KzjeCxP/view?usp=sharing)
 
 Overview
 ---
