@@ -6,7 +6,11 @@ Reference DNN and Convolution neural network to implement clone driving behaviou
 
 
 
+
+
 <img src="examples/CNN-Architecture.png" width="580" alt="Combined Image" />
+
+
 
 
 
@@ -52,17 +56,26 @@ Attached project report describes how project objectives achieved ![ Project Wri
 ## Project Outcome - Examples 
 Images depicts a few sample of project execution and step by step outcomes drived in processes. 
 
-Image depict how through simulator training data for autonomous drive gathered
-<img src="examples/DriveVisualisation-DataCollection.png" width="580" alt="Combined Image" />
+
+This image depict how through a simulator - the training data for an autonomous drive gathered
+
+<img src="examples/DriveVisualisation-DataCollection.png" width="780" alt="Combined Image" />
+
 
 A sampled image depiction gathered through simulator (autonomous drive training mode). Centre lane drive picture from a front facing camera.
-<img src="examples/centre_laneDrive-picture.jpg" width="580" alt="Combined Image" />
+
+<img src="examples/centre_laneDrive-picture.jpg" width="680" alt="Combined Image" />
+
 
 Python program used to realise a CNN and train same through the gathered data. The training execution logs (debug print) came on ubuntu terminal window, same got captured in a file for reference and displayed as outcome. Learned model get saved in a seperate file for car driving.
-<img src="examples/TrainingProcess-SystemLogs.png" width="580" alt="Combined Image" />
+
+<img src="examples/TrainingProcess-SystemLogs.png" width="780" alt="Combined Image" />
+
+
 
 #### Video Outcomes of Part 1 projects
 Through simulator and a learned CNN model drive a car, for outcome result pl - [ Watch this video ](https://drive.google.com/file/d/1MJrt0l8EXn4ZZpXhuX_PjlNrsRMan8F1/view?usp=sharing)
+
 
 ### Dependencies
 This lab requires:
