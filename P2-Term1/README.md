@@ -1,7 +1,7 @@
 ## Project: Build a Traffic Sign Recognition Program
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-This is second project of curriculam, objective is to build a "neural network" program to learn and recognize traffic signs. 
+This is second project of Term-1 curriculam, objective here is to build a program (neural network, data preprocessing and learning)to learn and recognize traffic signs. 
 
 
 <img src="examples/output_18_0.png" width="680" alt="Combined Image" />
