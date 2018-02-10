@@ -46,35 +46,44 @@ Attached project report describes how project objectives achieved ![ Project Wri
 Images translated from RGB scale to grayscale for image processing, below given is a sampled depiction of same.
 <img src="examples/grayscale.jpg" width="480" alt="Combined Image" />
 
-Below shown examples are post processed outcome of various type of lane lines identifications.
-<img src="examples/output_18_0.png" width="480" alt="Combined Image" />
+Below shown examples are visualisation of training data (German Traffic Sign - RGB)
+<img src="examples/output_18_0.png" width="580" alt="Combined Image" />
 
 Unbalanced training samples category wise (labeled) histogram analysis. It clearly depicts data provided is unbalanced - also a graphical data summary provided.  
-<img src="examples/output_19_0.png" width="480" alt="Combined Image" /> 
-<img src="examples/output_20_0.png" width="480" alt="Combined Image" />
+<img src="examples/output_19_0.png" width="580" alt="Combined Image" /> 
+
+<img src="examples/output_20_0.png" width="580" alt="Combined Image" />
+
 
 Data category with label visualisation for better understanding and analysis of training data.
-<img src="examples/output_23_0.png" width="480" alt="Combined Image" />
-<img src="examples/output_24_0.png" width="480" alt="Combined Image" />
+<img src="examples/output_23_0.png" width="580" alt="Combined Image" />
+
+<img src="examples/output_24_0.png" width="580" alt="Combined Image" />
+
 
 Fake data generated to increase training samples and learning accuracy. A sample depicted below - how a few samples images distored to create fake data and balance learning examples.
 <img src="examples/output_33_0.png" width="480" alt="Combined Image" />
 
+
 Summary visualisation of balanced training data available for training a model (Neural network)
-<img src="examples/output_34_1.png" width="480" alt="Combined Image" />
-<img src="examples/output_39_0.png" width="480" alt="Combined Image" />
+<img src="examples/output_34_1.png" width="580" alt="Combined Image" />
+
+<img src="examples/output_39_0.png" width="580" alt="Combined Image" />
+
 
 Images preprocessing - grayscaling 
-<img src="examples/output_43_1.png" width="480" alt="Combined Image" />
-<img src="examples/output_44_1.png" width="480" alt="Combined Image" />
+
+<img src="examples/output_43_1.png" width="580" alt="Combined Image" />
+
+<img src="examples/output_44_1.png" width="580" alt="Combined Image" />
+
 
 Training and Testing accuracy - a visualisation of neural network learning progress
-<img src="examples/output_79_1.png" width="480" alt="Combined Image" />
-<img src="examples/output_79_1.png" width="480" alt="Combined Image" />
+<img src="examples/output_79_1.png" width="680" alt="Combined Image" />
+
 
 #### Recognized outcome of test images - a visualisation of result
-<img src="examples/output_87_0.png" width="480" alt="Combined Image" />
-<img src="examples/output_87_0.png" width="480" alt="Combined Image" />
+<img src="examples/output_87_0.png" width="580" alt="Combined Image" />
 
 ### Dependencies
 This lab requires:
