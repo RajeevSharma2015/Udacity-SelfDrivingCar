@@ -4,7 +4,7 @@
 This is second project of curriculam, objective is to build a "neural network" program to learn and recognize traffic signs. 
 
 
-<img src="examples/output_18_0.png" width="480" alt="Combined Image" />
+<img src="examples/output_18_0.png" width="680" alt="Combined Image" />
 
 
 Overview
