@@ -2,7 +2,7 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-Reference DNN and Convolution neural network to clone driving behaviour.
+Reference DNN and Convolution neural network to implement clone driving behaviour.
 
 <img src="examples/CNN-Architecture.png" width="580" alt="Combined Image" />
 
