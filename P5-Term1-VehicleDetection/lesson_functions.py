@@ -1,13 +1,29 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jan 27 10:31:24 2018
 
-@author: rajeev
+@author: rajeev kumar sharma
+
+Purpose : This file defines all function, method and classes used in vehicle 
+          detection program. It also initialises system parameters used in 
+          this module. 
 """
 import numpy as np
 import cv2
 from skimage.feature import hog
+###############################################################################
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jan 29 11:20:13 2018
+
+@author: rajeev
+"""
+###############################################################################
+
+
 import matplotlib.image as mpimg
 from scipy.ndimage.measurements import label
 from global_declarations import *
@@ -17,7 +33,7 @@ from global_declarations import *
 
 def init_param():
     #color_space = 'YCrCb'
-    color_space = 'YUV'           # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+    color_space = 'YCrCb'           # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
     orient = 11                    # HOG orientations
     pix_per_cell = 8              # HOG pixels per cell
     #cell_per_block = 3            # HOG cells per block
@@ -34,12 +50,12 @@ def init_param():
     return color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, hog_feat, n_count
 
 def init_car_find():
-    THRES = 3          # Minimal overlapping boxes
-    ALPHA = 0.75       # Filter parameter, weight of the previous measurements
+    THRES = 11          # Minimal overlapping boxes - 3
+    ALPHA = 0.75       # Filter parameter, weight of the previous measurements - .75
     track_list = []    #[np.array([880, 440, 76, 76])]
     # track_list += [np.array([1200, 480, 124, 124])]
-    THRES_LEN = 32                   # Thresold
-    Y_MIN = 440
+    THRES_LEN = 32                   # Thresold - 32
+    Y_MIN = 440                      # 440 - base value
     heat_p = np.zeros((720, 1280))   # Store prev heat image
     boxes_p = []                     # Store prev car boxes
     return THRES, ALPHA, track_list, THRES_LEN, Y_MIN, heat_p, boxes_p 
@@ -341,6 +357,7 @@ def draw_labeled_bboxes(labels):
         size_ya = np.sqrt(size_x*size_y/asp)
         size_xa = int(size_ya*asp)
         size_ya = int(size_ya)
+        
         if x > (-3.049*y+1809): #If the rectangle on the road, coordinates estimated from a test image
             track_list_l.append(np.array([x, y, size_xa, size_ya]))
             if len(track_list) > 0:
@@ -447,9 +464,6 @@ def find_cars_cu(img, ystart, ystop, scale, svc, X_scaler, col_space, orient, pi
                 cv2.rectangle(draw_img,(xbox_left, ytop_draw+ystart),(xbox_left+win_draw,ytop_draw+win_draw+ystart),(0,0,255),6) 
                 
     return draw_img
-
-
-
 
 ########## Define a single function - identify cars and visualize #############
 ### Objective - extract features using hog sub-sampling 
@@ -636,7 +650,6 @@ class Vehicle_Detect():
 def find_car_process_video(image):
     ######## specific parameters defition #############
     det = Vehicle_Detect()
-    
     boxes = [] 
     
     track = (890, 450)

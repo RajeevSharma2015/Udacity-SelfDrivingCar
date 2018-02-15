@@ -1,3 +1,25 @@
+###############################################################################
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jan 29 11:20:13 2018
+
+@author: rajeev kumar sharma
+
+Purpose : This file serves following functionalities 
+            (a) import of all needful libraries, functions, packages & global variables
+            (b) include functions defined in other files (lessons learned and global declaration)
+            (c) read, visualise and preprocess data for classifier (vehicle and non vehicles)
+            (d) initialize SVM classifier and train for vehicles/non-vehicles
+            (e) test various functionalities defined - 
+                i. all curriculam learned lessons- car identify, slide windows and draw boxes
+                ii. prepare and teast - a pipeline to identify all vehicles in a frame
+                iii. run pipeline on a video
+            (d) fine tune pipeline for learning parametes
+            (g) fine tune pipeline for elimination of fake identification (vehicle)
+            (i) Intigrate lane line identification pipeline in program.
+""" 
+###############################################################################
 
 
 ### Import of STD library - package and misc functiona ########################
@@ -9,6 +31,7 @@ import glob
 import time
 import os
 import pickle
+import random
 import warnings
 from datetime import datetime
 from scipy.ndimage.measurements import label
@@ -38,13 +61,17 @@ global svc
 ### System Parameters #########################################################
 DEBUG_FLAG = 'False'
 REDUCE_SAMPLE = 'True'
-sample_size = 800           # Limiting number of samples
+KITTI_DATA = 'False'
+EXTRA_DATA = 'False'
+sample_size = 2000           # Limiting number of samples
 VEHICLES = ''               # Path for vehicle data
 NOT_VEHICLES = ''           # Path for Not Vehicle data
 projectDir1 = './vehicles/vehicles/GTI*/'             # GTI vehicles path
 projectDir2 = './vehicles/vehicles/KITTI*/'           # KITTI vehicles path
 projectDir3 = './non-vehicles/non-vehicles/GTI/'      # GTI non vehicle
 projectDir4 =  './non-vehicles/non-vehicles/Extras/'  # Extra non vehicle
+projectDir5 = './vehicles/vehicles/Whit*/'             # white vehicles path
+
 OUTPUT_IMAGE = './Output/test_images'                      # Output path 
 OUTPUT_FIND_CAR = './Output/find_cars/'          # Output path - additional
 OUTPUT_VIDEO_PATH = './Output/processed_video/' # video output path
@@ -72,33 +99,45 @@ projectFiles1 = glob.glob( os.path.join(projectDir1, '*.png') )
 projectFiles2 = glob.glob( os.path.join(projectDir2, '*.png') )
 projectFiles3 = glob.glob( os.path.join(projectDir3, '*.png') )
 projectFiles4 = glob.glob( os.path.join(projectDir4, '*.png') )
+projectFiles5 = glob.glob( os.path.join(projectDir5, '*.png') )
 
 for image in projectFiles1:
     cars.append(image)
 print("first set of vehicles read (GTI) : ", len(cars) ) # first set of vehicle list
 
-for image in projectFiles2:
-    cars.append(image)
-print("Second set of vehicles read (KTTI) & append : ", len(cars) ) # Second set of vehicle list & append
+if KITTI_DATA == 'True':
+    for image in projectFiles2:
+        cars.append(image)
+    print("Second set of vehicles read (KTTI) & append : ", len(cars) ) # Second set of vehicle list & append
 
 for image in projectFiles3:
     notcars.append(image)
 print("First set of non vehicles read (GTI) : ", len(notcars) ) # First set (GTI) of non vehicle list
 
-for image in projectFiles4:
-    notcars.append(image)
-print("Second set of non vehicles read (Extras) & append : ", len(notcars) ) # Second set of non vehicle list
+if EXTRA_DATA == 'True':       # Non-vehicle Data 
+    for image in projectFiles4:
+        notcars.append(image)
+    print("Second set of non vehicles read (Extras) & append : ", len(notcars) ) # Second set of non vehicle list
+    
 print("",)
 print("",)
 
 ## make REDUCE_SAMPLE False- if you don't want to reduce the sample size
 if REDUCE_SAMPLE == 'True':
-    cars = cars[0:sample_size]
-    notcars = notcars[0:sample_size]
+    #cars = cars[0:sample_size]
+    #notcars = notcars[0:sample_size]
+    cars = random.sample(cars, sample_size)  # randomize
+    notcars = random.sample(notcars, sample_size) # randomize
     print("length of cars images : ", len(cars))
     print("length of non car images : ", len(notcars))
 else:
     print("Complete set of images used")
+    
+#for image in projectFiles5:
+#    image = cv2.resize(image  , (64 , 64))    # resize image into 64*64
+#    cars.append(image)
+#print("Additional white vehicles sample (Rajeev) : ", len(cars) ) # additional set of white vehicle
+
 ###############################################################################
 
 ################ Classifier Section ###########################################
@@ -373,7 +412,6 @@ if DEBUG_FLAG == True :
 
 
 ############   SECTION - Alternative function trials ##########################
-
 ################ find cars - section testing ##################################
 #### Outcome of this section saved in folder: find_cars #######################
     
@@ -417,8 +455,7 @@ print("find car boxes values - draw outcome : ", fname)
 print('...')
 
 
-####################### cover multiple potential area of a image ####
-
+####################### cover multiple potential area of a image ##############
 image = cv2.imread('test_images/test1.jpg')
 scale = 3.0
 colorspace = color_space
@@ -446,94 +483,74 @@ fname = OUTPUT_FIND_CAR + 'test1.jpg'
 cv2.imwrite(fname, out_img)
 print("find car boxes values (multi) - draw outcome : ", fname)
 print('...')
+###############################################################################
 
 
-######## Section-c finc cars and pipeline functions ###########################
 def frame_proc(img, lane, video, vis):
     ######## specific parameters defition #############  
-    global heat_p, boxes_p, n_count
+    global heat_p, boxes_p
+    #n_count = 0
     
-    if (video and n_count%2==0) or not video: # Skip every second video frame
+    # Create deque for caching 10 frames
+    from collections import deque
+    cache = deque(maxlen=5)
+    
+    # if (video and n_count%2==0) or not video:  ## skip alternative frame
+    if video == True: # Skip every second video frame
         heat = np.zeros_like(img[:,:,0]).astype(np.float)
         boxes = []
+        boxes = find_car_slide_win(img)   ### find car's through slide window
         
-        #### Prepare box list for different position ##########################
-        #find_cars_step(img, ystart, ystop, xstart, xstop, scale, step)
-        boxes = find_cars_step(img, 400, 650, 950, 1280, 2.0, 2)
-        boxes += find_cars_step(img, 400, 500, 950, 1280, 1.5, 2)
-        boxes += find_cars_step(img, 400, 650, 0, 330, 2.0, 2)
-        boxes += find_cars_step(img, 400, 500, 0, 330, 1.5, 2)
-        
-        boxes += find_cars_step(img, 400, 460, 350, 950, .75, 2)
-        boxes += find_cars_step(img, 400, 670, 350, 1000, .75, 2)
-        boxes += find_cars_step(img, 400, 460, 350, 950, 1.5, 2)
-        boxes += find_cars_step(img, 400, 670, 350, 1000, 1.5, 2)
-        boxes += find_cars_step(img, 400, 460, 350, 950, 2, 2)
-        boxes += find_cars_step(img, 400, 670, 350, 1000, 2, 2)
-       
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, .75, 2)
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, .75, 2)
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, 1.5, 2)
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, 1.5, 2)
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, 2, 2)
-        boxes += find_cars_step(img, 380, 680, 1000, 1250, 2, 2)
-   
-        #######################################################################
-        
-        for track in track_list:
-            y_loc = track[1]+track[3]
-            lane_w = (y_loc*2.841-1170.0)/3.0
-            if lane_w < 96:
-                lane_w = 96
-            lane_h = lane_w/1.2
-            lane_w = max(lane_w, track[2])
-            xs = track[0]-lane_w
-            xf = track[0]+lane_w
-            if track[1] < Y_MIN:
-                track[1] = Y_MIN
-            ys = track[1]-lane_h
-            yf = track[1]+lane_h
-            if xs < 0: xs=0
-            if xf > 1280: xf=1280
-            if ys < Y_MIN - 40: ys=Y_MIN - 40
-            if yf > 720: yf=720
-            size_sq = lane_w / (0.015*lane_w+0.3)
-            scale = size_sq / 64.0
-            # Apply multi scale image windows 
-            boxes+=find_cars(img, ys, yf, xs, xf, scale, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.25, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.5, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.75, 2)
-            boxes+=find_cars(img, ys, yf, xs, xf, scale*1.05, 2)
-            if vis:
-                cv2.rectangle(img, (int(xs), int(ys)), (int(xf), int(yf)), color=(0,255,0), thickness=3)
         heat = add_heat(heat, boxes)
-        heat_l = heat_p + heat
-        heat_p = heat
-        heat_l = apply_threshold(heat_l,THRES) # Apply threshold to help remove false positives
+        # Add current heatmap to cache
+        heat = cache.append(heat)
+        # Accumulate heatmaps for thresholding, might use average as well
+        heat = np.sum(cache, axis=0)
+        heat = apply_threshold(heat,THRES) # Apply threshold to help remove false positives
+        
         # Visualize the heatmap when displaying    
-        heatmap = np.clip(heat_l, 0, 255)
+        heatmap = np.clip(heat, 0, 255)
         # Find final boxes from heatmap using label function
         labels = label(heatmap)
         #print((labels[0]))
         cars_boxes = draw_labeled_bboxes(labels)
-        boxes_p = cars_boxes
-        
+        boxes_p = cars_boxes 
     else:
         cars_boxes = boxes_p
+        
+        
     if lane: #If we was asked to draw the lane line, do it
         if video:
             img = laneline.draw_lane(img, True)
         else:
             img = laneline.draw_lane(img, False)
+            
     imp = draw_boxes(np.copy(img), cars_boxes, color=(0, 0, 255), thick=6)
+    
     if vis:
         imp = draw_boxes(imp, boxes, color=(0, 255, 255), thick=2)
         for track in track_list:
             cv2.circle(imp, (int(track[0]), int(track[1])), 5, color=(255, 0, 255), thickness=4)
-    n_count += 1
+            
+    #n_count += 1
     return imp
 
+
+def find_car_slide_win(img): 
+    boxes = []
+    #### Prepare box list for different position ##########################
+    #find_cars_step(img, ystart, ystop, xstart, xstop, scale, step)
+    boxes = find_cars_step(img, 420, 680, 950, 1280, 1, 2)  # Track-1
+    boxes += find_cars_step(img, 420, 680, 950, 1280, .75, 2)
+    boxes += find_cars_step(img, 420, 680, 950, 1280, .5, 2)
+    boxes += find_cars_step(img, 420, 680, 950, 1280, .25, 2)     
+             
+    boxes += find_cars_step(img, 420, 670, 680, 1000, 1, 2) # Track-2
+    boxes += find_cars_step(img, 420, 670, 680, 1000, .75, 2)
+    boxes += find_cars_step(img, 420, 670, 680, 1000, .5, 2)
+    boxes += find_cars_step(img, 420, 670, 680, 1000, .25, 2)
+    #######################################################################
+    return boxes
 
 def find_cars_step(img, ystart, ystop, xstart, xstop, scale, step):
     
@@ -612,13 +629,13 @@ def find_cars_step(img, ystart, ystop, xstart, xstop, scale, step):
                                int(ytop_draw+win_draw+ystart))))
     return boxes
 
-
 ############ Implement & Test - Video Processing ##############################
 
 ###### Project video - to apply pipeline
 from moviepy.editor import VideoFileClip
+#global n_count
 laneline.init_params(0.0)
-n_count = 0
+#n_count = 0
 
 def process_image(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -628,7 +645,7 @@ def process_image(image):
 #### Project output
 output_p = OUTPUT_VIDEO_PATH + 'project_video_processed' + str(datetime.now()) + '.mp4'
 clip1 = VideoFileClip("project_video.mp4")
-#clip1 = VideoFileClip("project_video.mp4").subclip(25,30)
+#clip1 = VideoFileClip("project_video.mp4").subclip(18,25)
 clip = clip1.fl_image(process_image)
 clip.write_videofile(output_p, audio=False)
 

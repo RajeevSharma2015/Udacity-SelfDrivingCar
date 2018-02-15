@@ -1,10 +1,12 @@
+###############################################################################
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Mon Jan 29 11:20:13 2018
-
-@author: rajeev
+@author: rajeev kumar sharma
+Purpose : Is to define all global variable for this vehicle detection solution
 """
+###############################################################################
 
 ###### Global variables declarations ##########################################
 #### Classifier parameter decleration and initialization
