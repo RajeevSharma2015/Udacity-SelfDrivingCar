@@ -64,8 +64,11 @@ REDUCE_SAMPLE = 'True'
 KITTI_DATA = 'False'
 EXTRA_DATA = 'False'
 sample_size = 2000           # Limiting number of samples
+HEATMAP_CACHE = 11
+
 VEHICLES = ''               # Path for vehicle data
 NOT_VEHICLES = ''           # Path for Not Vehicle data
+
 projectDir1 = './vehicles/vehicles/GTI*/'             # GTI vehicles path
 projectDir2 = './vehicles/vehicles/KITTI*/'           # KITTI vehicles path
 projectDir3 = './non-vehicles/non-vehicles/GTI/'      # GTI non vehicle
@@ -486,39 +489,18 @@ print('...')
 ###############################################################################
 
 
-def frame_proc(img, lane, video, vis):
-    ######## specific parameters defition #############  
-    global heat_p, boxes_p
+def frame_proc(img, lane, video, vis): 
+    global boxes_p ######## specific parameters defition ############# 
     #n_count = 0
-    
-    # Create deque for caching 10 frames
-    from collections import deque
-    cache = deque(maxlen=5)
     
     # if (video and n_count%2==0) or not video:  ## skip alternative frame
     if video == True: # Skip every second video frame
-        heat = np.zeros_like(img[:,:,0]).astype(np.float)
-        boxes = []
-        boxes = find_car_slide_win(img)   ### find car's through slide window
-        
-        heat = add_heat(heat, boxes)
-        # Add current heatmap to cache
-        heat = cache.append(heat)
-        # Accumulate heatmaps for thresholding, might use average as well
-        heat = np.sum(cache, axis=0)
-        heat = apply_threshold(heat,THRES) # Apply threshold to help remove false positives
-        
-        # Visualize the heatmap when displaying    
-        heatmap = np.clip(heat, 0, 255)
-        # Find final boxes from heatmap using label function
-        labels = label(heatmap)
-        #print((labels[0]))
-        cars_boxes = draw_labeled_bboxes(labels)
+        cars_boxes = []
+        cars_boxes = find_car_slide_win(img)   ### find car's through slide window
         boxes_p = cars_boxes 
     else:
         cars_boxes = boxes_p
-        
-        
+           
     if lane: #If we was asked to draw the lane line, do it
         if video:
             img = laneline.draw_lane(img, True)
@@ -535,22 +517,39 @@ def frame_proc(img, lane, video, vis):
     #n_count += 1
     return imp
 
+from collections import deque         # Create deque for caching 10 frames
+cache = deque(maxlen=HEATMAP_CACHE)   # Define cache Q
 
-def find_car_slide_win(img): 
+def find_car_slide_win(img):
+    global heat_p
+    
     boxes = []
+    heat = np.zeros_like(img[:,:,0]).astype(np.float)
+    
     #### Prepare box list for different position ##########################
     #find_cars_step(img, ystart, ystop, xstart, xstop, scale, step)
     boxes = find_cars_step(img, 420, 680, 950, 1280, 1, 2)  # Track-1
     boxes += find_cars_step(img, 420, 680, 950, 1280, .75, 2)
     boxes += find_cars_step(img, 420, 680, 950, 1280, .5, 2)
-    boxes += find_cars_step(img, 420, 680, 950, 1280, .25, 2)     
-             
+    boxes += find_cars_step(img, 420, 620, 920, 1220, .5, 2) 
+         
     boxes += find_cars_step(img, 420, 670, 680, 1000, 1, 2) # Track-2
     boxes += find_cars_step(img, 420, 670, 680, 1000, .75, 2)
     boxes += find_cars_step(img, 420, 670, 680, 1000, .5, 2)
-    boxes += find_cars_step(img, 420, 670, 680, 1000, .25, 2)
+    boxes += find_cars_step(img, 400, 650, 620, 1000, .5, 2) # Track-2
     #######################################################################
-    return boxes
+
+    heat = add_heat(heat, boxes)   # Add current heatmap to cache
+    heat = cache.append(heat)
+    heat = np.sum(cache, axis=0) # Accumulate heatmaps for thresholding, might use average as well
+    heat = apply_threshold(heat,THRES) # Apply threshold to help remove false positives  
+    
+    heatmap = np.clip(heat, 0, 255) # Visualize the heatmap when displaying
+    labels = label(heatmap) # Find final boxes from heatmap using label function
+    cars_boxes = draw_labeled_bboxes(labels)
+    
+    heat_p = heat/HEATMAP_CACHE        # average heat value
+    return cars_boxes
 
 def find_cars_step(img, ystart, ystop, xstart, xstop, scale, step):
     

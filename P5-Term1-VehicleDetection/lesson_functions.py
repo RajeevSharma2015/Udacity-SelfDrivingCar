@@ -50,7 +50,7 @@ def init_param():
     return color_space, orient, pix_per_cell, cell_per_block, hog_channel, spatial_size, hist_bins, hist_range, spatial_feat, hist_feat, hog_feat, n_count
 
 def init_car_find():
-    THRES = 11          # Minimal overlapping boxes - 3
+    THRES = 10          # Minimal overlapping boxes - 3
     ALPHA = 0.75       # Filter parameter, weight of the previous measurements - .75
     track_list = []    #[np.array([880, 440, 76, 76])]
     # track_list += [np.array([1200, 480, 124, 124])]
