@@ -68,8 +68,8 @@ In this term, you'll learn how to use an array of sensor data to perceive the en
 
 #### Extended Kalman Filters
     
-     Udacity-SelfDrivingCar/P1-Term2-ExtendedKalmanFilter/Picture/EKF-CyclistTracking.png 
-    
+    ![ Extended Kalman Filter - Tracking a cyclist ](examples/Images/EKF-CyclistTracking.png "lanes marking identification on roads")
+        
 
 ### Part 3 : Path Planning, Concentrations, and Systems
 
