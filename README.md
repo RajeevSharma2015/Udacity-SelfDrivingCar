@@ -67,8 +67,9 @@ In this term, you'll learn how to use an array of sensor data to perceive the en
     Project: Model Predictive Control
 
 #### Extended Kalman Filters
-    
-    ![ Extended Kalman Filter - Tracking a cyclist ](examples/Images/EKF-CyclistTracking.png "lanes marking identification on roads")
+Utilize a kalman filter to estimate the state of a moving object of interest with noisy lidar and radar measurements. Passing the project requires obtaining RMSE values that are lower than the tolerance outlined in the project rubric.
+
+![ Extended Kalman Filter - To estimate state of a moving object ](examples/Images/EKF-CyclistTracking.png") 
         
 
 ### Part 3 : Path Planning, Concentrations, and Systems
