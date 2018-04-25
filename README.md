@@ -66,6 +66,11 @@ In this term, you'll learn how to use an array of sensor data to perceive the en
     Project: PID Controller
     Project: Model Predictive Control
 
+#### Extended Kalman Filters
+    
+     Udacity-SelfDrivingCar/P1-Term2-ExtendedKalmanFilter/Picture/EKF-CyclistTracking.png 
+    
+
 ### Part 3 : Path Planning, Concentrations, and Systems
 
 In this term, you'll learn how to plan where the vehicle should go, how the vehicle systems work together to get it there, and you'll perform a deep-dive into a concentration of your choice.
