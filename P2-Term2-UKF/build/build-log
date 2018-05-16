@@ -1,0 +1,6 @@
+Scanning dependencies of target UnscentedKF
+[ 25%] Building CXX object CMakeFiles/UnscentedKF.dir/src/ukf.cpp.o
+[ 50%] Building CXX object CMakeFiles/UnscentedKF.dir/src/main.cpp.o
+[ 75%] Building CXX object CMakeFiles/UnscentedKF.dir/src/tools.cpp.o
+[100%] Linking CXX executable UnscentedKF
+[100%] Built target UnscentedKF
